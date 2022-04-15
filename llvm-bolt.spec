@@ -8,12 +8,11 @@ Version  : 14.0.0
 Release  : 428
 URL      : file:///insilications/apps/llvm-bolt-14.0.0.tar.gz
 Source0  : file:///insilications/apps/llvm-bolt-14.0.0.tar.gz
-Summary  : Google microbenchmark framework
+Summary  : No detailed summary available
 Group    : Development/Tools
-License  : Apache-2.0 GPL-2.0
+License  : GPL-2.0
 BuildRequires : Sphinx
 BuildRequires : Vulkan-Headers-dev
-BuildRequires : Vulkan-Headers-dev Vulkan-Loader-dev Vulkan-Tools
 BuildRequires : Vulkan-Loader-dev
 BuildRequires : Vulkan-Tools
 BuildRequires : binutils-dev
@@ -22,7 +21,6 @@ BuildRequires : bison
 BuildRequires : buildreq-cmake
 BuildRequires : buildreq-distutils3
 BuildRequires : cmake
-BuildRequires : curl-dev
 BuildRequires : dejagnu
 BuildRequires : docbook-utils
 BuildRequires : docbook-xml
@@ -68,7 +66,6 @@ BuildRequires : ncurses-staticdev
 BuildRequires : ninja
 BuildRequires : ninja-bin
 BuildRequires : perl
-BuildRequires : pkg-config
 BuildRequires : pkgconfig(libedit)
 BuildRequires : pkgconfig(libffi)
 BuildRequires : pkgconfig(zlib)
@@ -81,14 +78,12 @@ BuildRequires : pypi(cffi)
 BuildRequires : pypi(charset_normalizer)
 BuildRequires : pypi(dataclasses)
 BuildRequires : pypi(deprecated)
-BuildRequires : pypi(flit)
 BuildRequires : pypi(gitdb)
 BuildRequires : pypi(gitpython)
 BuildRequires : pypi(graphviz)
 BuildRequires : pypi(humanize)
 BuildRequires : pypi(idna)
 BuildRequires : pypi(psutil)
-BuildRequires : pypi(ptyprocess)
 BuildRequires : pypi(pybind11)
 BuildRequires : pypi(pycparser)
 BuildRequires : pypi(pygithub)
@@ -125,9 +120,7 @@ BuildRequires : zlib-staticdev
 %global debug_package %{nil}
 
 %description
-Polly - Polyhedral optimizations for LLVM
------------------------------------------
-http://polly.llvm.org/
+No detailed description available
 
 %prep
 %setup -q -n llvm-bolt-14.0.0
@@ -139,7 +132,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1650017766
+export SOURCE_DATE_EPOCH=1650020085
 unset LD_AS_NEEDED
 mkdir -p clr-build
 pushd clr-build
@@ -181,7 +174,7 @@ cmake -G Ninja ../llvm \
     -DCMAKE_INSTALL_LIBDIR=/usr/lib64 \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_SBINDIR=/usr/bin \
-    -DLLVM_PARALLEL_COMPILE_JOBS:STRING=15 \
+    -DLLVM_PARALLEL_COMPILE_JOBS:STRING=12 \
     -DLLVM_PARALLEL_LINK_JOBS:STRING=1 \
     -DCMAKE_AR=/usr/bin/gcc-ar \
     -DCMAKE_NM=/usr/bin/gcc-nm \
@@ -210,7 +203,12 @@ cmake -G Ninja ../llvm \
     -DLLVM_BUILD_DOCS:BOOL=OFF \
     -DLLVM_BUILD_RUNTIME:BOOL=OFF \
     -DLLVM_BUILD_TOOLS:BOOL=OFF \
+    -DCLANG_BUILD_TOOLS:BOOL=OFF \
     -DLLVM_BUILD_UTILS:BOOL=OFF \
+    -DCOMPILER_RT_BUILD_SANITIZERS:BOOL=OFF \
+    -DCOMPILER_RT_BUILD_XRAY:BOOL=OFF \
+    -DCOMPILER_RT_BUILD_CRT:BOOL=OFF \
+    -DCOMPILER_RT_BUILD_LIBFUZZER:BOOL=OFF \
     -DLLVM_INSTALL_BINUTILS_SYMLINKS:BOOL=OFF \
     -DLLVM_INSTALL_UTILS:BOOL=OFF \
     -DLLVM_ENABLE_UNWIND_TABLES:BOOL=ON \
@@ -224,20 +222,20 @@ cmake -G Ninja ../llvm \
     -DLLVM_ENABLE_FFI:BOOL=ON \
     -DLLVM_ENABLE_ASSERTIONS:BOOL=OFF \
     -DLLVM_ENABLE_PROJECTS="bolt" \
-    -DCMAKE_C_FLAGS_RELEASE="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_CXX_FLAGS_RELEASE="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_EXE_LINKER_FLAGS_RELEASE="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_MODULE_LINKER_FLAGS_RELEASE="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_ASM_FLAGS_RELEASE="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_Fortran_FLAGS_RELEASE="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_C_FLAGS="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_CXX_FLAGS="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_EXE_LINKER_FLAGS="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_MODULE_LINKER_FLAGS="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_SHARED_LINKER_FLAGS="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_ASM_FLAGS="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
-    -DCMAKE_Fortran_FLAGS="-DNDEBUG -O2 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_C_FLAGS_RELEASE="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_CXX_FLAGS_RELEASE="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_EXE_LINKER_FLAGS_RELEASE="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_MODULE_LINKER_FLAGS_RELEASE="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_ASM_FLAGS_RELEASE="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_Fortran_FLAGS_RELEASE="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_C_FLAGS="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_CXX_FLAGS="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_EXE_LINKER_FLAGS="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_MODULE_LINKER_FLAGS="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_SHARED_LINKER_FLAGS="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_ASM_FLAGS="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
+    -DCMAKE_Fortran_FLAGS="-DNDEBUG -O3 -mno-vzeroupper --param=lto-max-streaming-parallelism=16 -march=native -mtune=native -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wno-error -mprefer-vector-width=256 -falign-functions=32 -fexceptions -fasynchronous-unwind-tables -fdevirtualize-at-ltrans -fno-semantic-interposition -Wl,-Bsymbolic-functions -fno-stack-protector -fuse-ld=bfd -fuse-linker-plugin -malign-data=cacheline -flive-range-shrinkage -fno-lto -fno-plt -static-libstdc++ -static-libgcc -Wno-error -Wp,-D_REENTRANT -ffat-lto-objects -fPIC -fomit-frame-pointer -Wl,--build-id=sha1 -pthread -pipe" \
     -DGCC_INSTALL_PREFIX="/usr" \
     -Wno-dev
 ## make_prepend content
@@ -270,7 +268,7 @@ ninja --verbose all
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1650017766
+export SOURCE_DATE_EPOCH=1650020085
 rm -rf %{buildroot}
 export GCC_IGNORE_WERROR=1
 ## altflags1f content
@@ -299,30 +297,25 @@ export LIBRARY_PATH="/usr/local/nvidia/lib64:/usr/local/nvidia/lib64/gbm:/usr/lo
 export PATH="/usr/lib64/ccache/bin:/usr/local/cuda/bin:/usr/local/nvidia/bin:/usr/bin/haswell:/usr/bin:/usr/sbin"
 export CPATH="/usr/local/cuda/include"
 ## altflags1f end
-pushd clr-build
-%ninja_install
-popd
-## install_append content
+## install_macro start
 install -dm 0755 %{buildroot}/usr/lib64/
 install -dm 0755 %{buildroot}/usr/lib/
 install -dm 0755 %{buildroot}/usr/bin/
-
-install -dm 0755 llvm-bolt %{buildroot}/usr/bin/llvm-bolt
-
-install -dm 0755 llvm-bolt-heatmap %{buildroot}/usr/bin/llvm-bolt-heatmap
-
-#link
-install -dm 0755 llvm-boltdiff %{buildroot}/usr/bin/llvm-boltdiff
-
-#link
-install -dm 0755 perf2bolt %{buildroot}/usr/bin/perf2bolt
-
-install -dm 0755 build/lib/libbolt_rt_instr.a %{buildroot}/usr/lib/libbolt_rt_instr.a
-install -dm 0755 build/lib/libbolt_rt_instr.a %{buildroot}/usr/lib64/libbolt_rt_instr.a
-
-install -dm 0755 build/lib/libbolt_rt_hugify.a %{buildroot}/usr/lib/libbolt_rt_hugify.a
-install -dm 0755 build/lib/libbolt_rt_hugify.a %{buildroot}/usr/lib64/libbolt_rt_hugify.a
-## install_append end
+pushd clr-build
+pushd bin/
+install -m 0755 llvm-bolt %{buildroot}/usr/bin/llvm-bolt
+install -m 0755 llvm-bolt-heatmap %{buildroot}/usr/bin/llvm-bolt-heatmap
+cp -P llvm-boltdiff %{buildroot}/usr/bin/llvm-boltdiff
+cp -P perf2bolt %{buildroot}/usr/bin/perf2bolt
+popd
+pushd lib
+install -m 0755 build/lib/libbolt_rt_instr.a %{buildroot}/usr/lib/libbolt_rt_instr.a
+install -m 0755 build/lib/libbolt_rt_instr.a %{buildroot}/usr/lib64/libbolt_rt_instr.a
+install -m 0755 build/lib/libbolt_rt_hugify.a %{buildroot}/usr/lib/libbolt_rt_hugify.a
+install -m 0755 build/lib/libbolt_rt_hugify.a %{buildroot}/usr/lib64/libbolt_rt_hugify.a
+popd
+popd
+## install_macro end
 
 %files
 %defattr(-,root,root,-)
