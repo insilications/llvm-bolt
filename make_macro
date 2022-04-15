@@ -1,0 +1,3 @@
+#! cmake --build .
+ninja --verbose all
+ninja --verbose llvm-spirv
