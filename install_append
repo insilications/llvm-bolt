@@ -1,28 +1,15 @@
-pushd %{buildroot}/usr/bin
-mv clang ..
-VERSION=%{version}
-VERSION=${VERSION%%%%.*}
-for f in *; do
-    case "$f" in
-        *-$VERSION)
-            # Already versioned, leave it alone
-            continue
-            ;;
-    esac
-    if [ -L "$f" ]; then
-        # Retarget the symlink
-        ln -s -f `readlink $f`-$VERSION $f
-    fi
-    mv $f $f-$VERSION
-    ln -s -f $f-$VERSION $f
-done
-mv ../clang .
-popd
-
-# Ditto for the gold plugin
-pushd %{buildroot}/usr/lib64
-mv LLVMgold.so LLVMgold-$VERSION.so
-ln -s LLVMgold-$VERSION.so LLVMgold.so
-mkdir -p ../lib/bfd-plugins
-ln -s ../../lib64/LLVMgold-$VERSION.so ../lib/bfd-plugins
-popd
+install -dm 0755 %{buildroot}/usr/lib64/
+install -dm 0755 %{buildroot}/usr/lib/
+install -dm 0755 %{buildroot}/usr/bin/
+#! bin
+install -dm 0755 llvm-bolt %{buildroot}/usr/bin/llvm-bolt
+install -dm 0755 llvm-bolt-heatmap %{buildroot}/usr/bin/llvm-bolt-heatmap
+#! bin link
+install -dm 0755 llvm-boltdiff %{buildroot}/usr/bin/llvm-boltdiff
+#! bin link
+install -dm 0755 perf2bolt %{buildroot}/usr/bin/perf2bolt
+#! lib
+install -dm 0755 build/lib/libbolt_rt_instr.a %{buildroot}/usr/lib/libbolt_rt_instr.a
+install -dm 0755 build/lib/libbolt_rt_instr.a %{buildroot}/usr/lib64/libbolt_rt_instr.a
+install -dm 0755 build/lib/libbolt_rt_hugify.a %{buildroot}/usr/lib/libbolt_rt_hugify.a
+install -dm 0755 build/lib/libbolt_rt_hugify.a %{buildroot}/usr/lib64/libbolt_rt_hugify.a
