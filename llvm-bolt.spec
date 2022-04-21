@@ -11,6 +11,7 @@ Source0  : file:///insilications/apps/llvm-bolt-14.0.0.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
+Requires: llvm-bolt-bin = %{version}-%{release}
 BuildRequires : Sphinx
 BuildRequires : Vulkan-Headers-dev
 BuildRequires : Vulkan-Loader-dev
@@ -152,6 +153,22 @@ BuildRequires : zlib-staticdev
 %description
 No detailed description available
 
+%package bin
+Summary: bin components for the llvm-bolt package.
+Group: Binaries
+
+%description bin
+bin components for the llvm-bolt package.
+
+
+%package staticdev
+Summary: staticdev components for the llvm-bolt package.
+Group: Default
+
+%description staticdev
+staticdev components for the llvm-bolt package.
+
+
 %prep
 %setup -q -n llvm-bolt-14.0.0
 cd %{_builddir}/llvm-bolt-14.0.0
@@ -162,7 +179,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1650551820
+export SOURCE_DATE_EPOCH=1650552591
 unset LD_AS_NEEDED
 mkdir -p clr-build
 pushd clr-build
@@ -224,7 +241,7 @@ cmake -G Ninja ../llvm \
     -DLLVM_BINUTILS_INCDIR=/usr/include \
     -DLLVM_OPTIMIZED_TABLEGEN:BOOL=ON \
     -DLLVM_ENABLE_NEW_PASS_MANAGER:BOOL=ON \
-    -DLLVM_ENABLE_PIC:BOOL=ON \
+    -DLLVM_ENABLE_PIC:BOOL=OFF \
     -DLLVM_TARGETS_TO_BUILD="X86" \
     -DLLVM_USE_LINKER:STRING=lld \
     -DLLVM_HOST_TRIPLE="x86_64-generic-linux" \
@@ -300,7 +317,7 @@ ninja --verbose all
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1650551820
+export SOURCE_DATE_EPOCH=1650552591
 rm -rf %{buildroot}
 export GCC_IGNORE_WERROR=1
 ## altflags1f content
@@ -353,3 +370,16 @@ popd
 
 %files
 %defattr(-,root,root,-)
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/llvm-bolt
+/usr/bin/llvm-boltdiff
+/usr/bin/perf2bolt
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib/libbolt_rt_hugify.a
+/usr/lib/libbolt_rt_instr.a
+/usr/lib64/libbolt_rt_hugify.a
+/usr/lib64/libbolt_rt_instr.a
