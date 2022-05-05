@@ -84,7 +84,6 @@ pcre-staticdev
 perl
 procps-ng
 protobuf-dev
-psutil
 pypi(absl_py)
 pypi(certifi)
 pypi(cffi)
