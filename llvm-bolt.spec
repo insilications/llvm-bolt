@@ -11,6 +11,7 @@ Source0  : file:///insilications/apps/llvm-bolt-14.0.0.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
+Requires: llvm-bolt-bin = %{version}-%{release}
 BuildRequires : Sphinx
 BuildRequires : Vulkan-Headers-dev
 BuildRequires : Vulkan-Loader-dev
@@ -151,6 +152,22 @@ BuildRequires : zlib-staticdev
 %description
 No detailed description available
 
+%package bin
+Summary: bin components for the llvm-bolt package.
+Group: Binaries
+
+%description bin
+bin components for the llvm-bolt package.
+
+
+%package staticdev
+Summary: staticdev components for the llvm-bolt package.
+Group: Default
+
+%description staticdev
+staticdev components for the llvm-bolt package.
+
+
 %prep
 %setup -q -n llvm-bolt-14.0.0
 cd %{_builddir}/llvm-bolt-14.0.0
@@ -161,7 +178,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1651736646
+export SOURCE_DATE_EPOCH=1651737532
 unset LD_AS_NEEDED
 mkdir -p clr-build
 pushd clr-build
@@ -174,10 +191,10 @@ unset CFLAGS
 unset CXXFLAGS
 unset FCFLAGS
 unset FFLAGS
-export CFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
-export ASMFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
-export CXXFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
-export LDFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -Wl,-mllvm,-x86-use-vzeroupper=0"
+# export CFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
+# export ASMFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
+# export CXXFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
+# export LDFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -Wl,-mllvm,-x86-use-vzeroupper=0"
 export CC=clang
 export CXX=clang++
 export AR=/usr/bin/llvm-ar
@@ -292,7 +309,7 @@ ninja --verbose all
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1651736646
+export SOURCE_DATE_EPOCH=1651737532
 rm -rf %{buildroot}
 export GCC_IGNORE_WERROR=1
 ## altflags1f content
@@ -303,10 +320,10 @@ unset CFLAGS
 unset CXXFLAGS
 unset FCFLAGS
 unset FFLAGS
-export CFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
-export ASMFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
-export CXXFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
-export LDFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -Wl,-mllvm,-x86-use-vzeroupper=0"
+# export CFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
+# export ASMFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
+# export CXXFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
+# export LDFLAGS="-Wno-unused-command-line-argument -DNDEBUG -O3 -falign-functions=32 -fasynchronous-unwind-tables -fexceptions -fno-lto -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -Wl,-mllvm,-x86-use-vzeroupper=0"
 export CC=clang
 export CXX=clang++
 export AR=/usr/bin/llvm-ar
@@ -345,3 +362,16 @@ popd
 
 %files
 %defattr(-,root,root,-)
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/llvm-bolt
+/usr/bin/llvm-boltdiff
+/usr/bin/perf2bolt
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib/libbolt_rt_hugify.a
+/usr/lib/libbolt_rt_instr.a
+/usr/lib64/libbolt_rt_hugify.a
+/usr/lib64/libbolt_rt_instr.a
