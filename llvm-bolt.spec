@@ -8,12 +8,11 @@ Version  : 14.0.0
 Release  : 433
 URL      : file:///insilications/apps/llvm-bolt-14.0.0.tar.gz
 Source0  : file:///insilications/apps/llvm-bolt-14.0.0.tar.gz
-Summary  : Google microbenchmark framework
+Summary  : No detailed summary available
 Group    : Development/Tools
-License  : Apache-2.0 GPL-2.0
+License  : GPL-2.0
 BuildRequires : Sphinx
 BuildRequires : Vulkan-Headers-dev
-BuildRequires : Vulkan-Headers-dev Vulkan-Loader-dev Vulkan-Tools
 BuildRequires : Vulkan-Loader-dev
 BuildRequires : Vulkan-Tools
 BuildRequires : asciidoctor
@@ -94,7 +93,6 @@ BuildRequires : pcre2
 BuildRequires : pcre2-dev
 BuildRequires : pcre2-staticdev
 BuildRequires : perl
-BuildRequires : pkg-config
 BuildRequires : pkgconfig(libedit)
 BuildRequires : pkgconfig(libffi)
 BuildRequires : pkgconfig(zlib)
@@ -106,14 +104,12 @@ BuildRequires : pypi(cffi)
 BuildRequires : pypi(charset_normalizer)
 BuildRequires : pypi(dataclasses)
 BuildRequires : pypi(deprecated)
-BuildRequires : pypi(flit)
 BuildRequires : pypi(gitdb)
 BuildRequires : pypi(gitpython)
 BuildRequires : pypi(graphviz)
 BuildRequires : pypi(humanize)
 BuildRequires : pypi(idna)
 BuildRequires : pypi(psutil)
-BuildRequires : pypi(ptyprocess)
 BuildRequires : pypi(pybind11)
 BuildRequires : pypi(pycparser)
 BuildRequires : pypi(pygithub)
@@ -153,9 +149,7 @@ BuildRequires : zlib-staticdev
 %global debug_package %{nil}
 
 %description
-Polly - Polyhedral optimizations for LLVM
------------------------------------------
-http://polly.llvm.org/
+No detailed description available
 
 %prep
 %setup -q -n llvm-bolt-14.0.0
@@ -167,7 +161,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1652709216
+export SOURCE_DATE_EPOCH=1652709282
 unset LD_AS_NEEDED
 mkdir -p clr-build
 pushd clr-build
@@ -299,7 +293,7 @@ ninja --verbose all
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1652709216
+export SOURCE_DATE_EPOCH=1652709282
 rm -rf %{buildroot}
 export GCC_IGNORE_WERROR=1
 ## altflags1f content
