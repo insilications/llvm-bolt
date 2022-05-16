@@ -1,2 +1,4 @@
 #! cmake --build .
 ninja --verbose all
+ninja --verbose merge-fdata
+ninja --verbose llvm-bolt-heatmap

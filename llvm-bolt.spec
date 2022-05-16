@@ -161,7 +161,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1652709282
+export SOURCE_DATE_EPOCH=1652709867
 unset LD_AS_NEEDED
 mkdir -p clr-build
 pushd clr-build
@@ -293,7 +293,7 @@ ninja --verbose all
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1652709282
+export SOURCE_DATE_EPOCH=1652709867
 rm -rf %{buildroot}
 export GCC_IGNORE_WERROR=1
 ## altflags1f content

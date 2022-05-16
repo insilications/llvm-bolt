@@ -5,7 +5,8 @@ install -dm 0755 %{buildroot}/usr/bin/
 pushd clr-build
 pushd bin/
 install -m 0755 llvm-bolt %{buildroot}/usr/bin/llvm-bolt
-install -m 0755 llvm-bolt-heatmap %{buildroot}/usr/bin/llvm-bolt-heatmap || :
+install -m 0755 llvm-bolt-heatmap %{buildroot}/usr/bin/llvm-bolt-heatmap
+install -m 0755 merge-fdata %{buildroot}/usr/bin/merge-fdata
 #! bin link
 cp -P llvm-boltdiff %{buildroot}/usr/bin/llvm-boltdiff
 #! bin link
