@@ -11,6 +11,7 @@ Source0  : file:///insilications/apps/llvm-bolt-14.0.0.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
+Requires: llvm-bolt-bin = %{version}-%{release}
 BuildRequires : Sphinx
 BuildRequires : Vulkan-Headers-dev
 BuildRequires : Vulkan-Loader-dev
@@ -151,6 +152,22 @@ BuildRequires : zlib-staticdev
 %description
 No detailed description available
 
+%package bin
+Summary: bin components for the llvm-bolt package.
+Group: Binaries
+
+%description bin
+bin components for the llvm-bolt package.
+
+
+%package staticdev
+Summary: staticdev components for the llvm-bolt package.
+Group: Default
+
+%description staticdev
+staticdev components for the llvm-bolt package.
+
+
 %prep
 %setup -q -n llvm-bolt-14.0.0
 cd %{_builddir}/llvm-bolt-14.0.0
@@ -161,7 +178,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1652709867
+export SOURCE_DATE_EPOCH=1652710512
 unset LD_AS_NEEDED
 mkdir -p clr-build
 pushd clr-build
@@ -289,11 +306,13 @@ sd '(LINK_FLAGS.+)(\s\-lxml2)' -- '$1 -Wl,--whole-archive,--allow-multiple-defin
 ## make_prepend end
 ## make_macro content
 ninja --verbose all
+ninja --verbose merge-fdata
+ninja --verbose llvm-bolt-heatmap
 ## make_macro end
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1652709867
+export SOURCE_DATE_EPOCH=1652710512
 rm -rf %{buildroot}
 export GCC_IGNORE_WERROR=1
 ## altflags1f content
@@ -331,7 +350,8 @@ install -dm 0755 %{buildroot}/usr/bin/
 pushd clr-build
 pushd bin/
 install -m 0755 llvm-bolt %{buildroot}/usr/bin/llvm-bolt
-install -m 0755 llvm-bolt-heatmap %{buildroot}/usr/bin/llvm-bolt-heatmap || :
+install -m 0755 llvm-bolt-heatmap %{buildroot}/usr/bin/llvm-bolt-heatmap
+install -m 0755 merge-fdata %{buildroot}/usr/bin/merge-fdata
 cp -P llvm-boltdiff %{buildroot}/usr/bin/llvm-boltdiff
 cp -P perf2bolt %{buildroot}/usr/bin/perf2bolt
 popd
@@ -346,3 +366,18 @@ popd
 
 %files
 %defattr(-,root,root,-)
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/llvm-bolt
+/usr/bin/llvm-bolt-heatmap
+/usr/bin/llvm-boltdiff
+/usr/bin/merge-fdata
+/usr/bin/perf2bolt
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib/libbolt_rt_hugify.a
+/usr/lib/libbolt_rt_instr.a
+/usr/lib64/libbolt_rt_hugify.a
+/usr/lib64/libbolt_rt_instr.a
