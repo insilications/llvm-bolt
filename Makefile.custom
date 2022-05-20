@@ -1,0 +1,2 @@
+preautospec-checks:
+	$(eval export NEWURL:=$(shell python get_url.py))
