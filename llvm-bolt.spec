@@ -5,7 +5,7 @@
 %define keepstatic 1
 Name     : llvm-bolt
 Version  : 14.0.0
-Release  : 435
+Release  : 436
 URL      : file:///aot/build/clearlinux/packages/llvm-bolt/llvm-bolt-14.0.0.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/llvm-bolt/llvm-bolt-14.0.0.tar.gz
 Summary  : Google microbenchmark framework
@@ -167,11 +167,10 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1653710969
+export SOURCE_DATE_EPOCH=1654325521
 unset LD_AS_NEEDED
 mkdir -p clr-build
 pushd clr-build
-export GCC_IGNORE_WERROR=1
 ## altflags1f content
 export VERBOSE=1
 unset ASFLAGS
@@ -301,9 +300,8 @@ ninja --verbose llvm-bolt-heatmap
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1653710969
+export SOURCE_DATE_EPOCH=1654325521
 rm -rf %{buildroot}
-export GCC_IGNORE_WERROR=1
 ## altflags1f content
 export VERBOSE=1
 unset ASFLAGS
