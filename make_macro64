@@ -1,4 +1,7 @@
 #! cmake --build .
-ninja --verbose all
-ninja --verbose merge-fdata
+# ninja --verbose all
+ninja --verbose llvm-bolt
 ninja --verbose llvm-bolt-heatmap
+ninja --verbose llvm-boltdiff
+ninja --verbose merge-fdata
+ninja --verbose bin/perf2bolt

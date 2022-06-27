@@ -5,12 +5,13 @@
 %define keepstatic 1
 Name     : llvm-bolt
 Version  : 14.0.0
-Release  : 441
+Release  : 442
 URL      : file:///aot/build/clearlinux/packages/llvm-bolt/llvm-bolt-14.0.0.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/llvm-bolt/llvm-bolt-14.0.0.tar.gz
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-2.0
+Requires: llvm-bolt-bin = %{version}-%{release}
 BuildRequires : Sphinx
 BuildRequires : Vulkan-Headers-dev
 BuildRequires : Vulkan-Loader-dev
@@ -135,6 +136,22 @@ BuildRequires : zlib-staticdev
 %description
 No detailed description available
 
+%package bin
+Summary: bin components for the llvm-bolt package.
+Group: Binaries
+
+%description bin
+bin components for the llvm-bolt package.
+
+
+%package staticdev
+Summary: staticdev components for the llvm-bolt package.
+Group: Default
+
+%description staticdev
+staticdev components for the llvm-bolt package.
+
+
 %prep
 %setup -q -n llvm-bolt-14.0.0
 cd %{_builddir}/llvm-bolt-14.0.0
@@ -145,7 +162,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1656318983
+export SOURCE_DATE_EPOCH=1656510538
 unset LD_AS_NEEDED
 mkdir -p clr-build
 pushd clr-build
@@ -189,7 +206,7 @@ cmake -G Ninja ../llvm \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_SBINDIR=/usr/bin \
     -DLLVM_PARALLEL_COMPILE_JOBS:STRING=16 \
-    -DLLVM_PARALLEL_LINK_JOBS:STRING=1 \
+    -DLLVM_PARALLEL_LINK_JOBS:STRING=2 \
     -DCMAKE_AR=/usr/bin/llvm-ar \
     -DCMAKE_NM=/usr/bin/llvm-nm \
     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
@@ -285,7 +302,7 @@ ninja --verbose llvm-bolt-heatmap
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1656318983
+export SOURCE_DATE_EPOCH=1656510538
 rm -rf %{buildroot}
 ## altflags1f content
 export VERBOSE=1
@@ -338,3 +355,18 @@ popd
 
 %files
 %defattr(-,root,root,-)
+
+%files bin
+%defattr(-,root,root,-)
+/usr/bin/llvm-bolt
+/usr/bin/llvm-bolt-heatmap
+/usr/bin/llvm-boltdiff
+/usr/bin/merge-fdata
+/usr/bin/perf2bolt
+
+%files staticdev
+%defattr(-,root,root,-)
+/usr/lib/libbolt_rt_hugify.a
+/usr/lib/libbolt_rt_instr.a
+/usr/lib64/libbolt_rt_hugify.a
+/usr/lib64/libbolt_rt_instr.a

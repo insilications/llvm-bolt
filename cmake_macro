@@ -10,7 +10,7 @@ cmake -G Ninja ../llvm \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_SBINDIR=/usr/bin \
     -DLLVM_PARALLEL_COMPILE_JOBS:STRING=16 \
-    -DLLVM_PARALLEL_LINK_JOBS:STRING=1 \
+    -DLLVM_PARALLEL_LINK_JOBS:STRING=2 \
     -DCMAKE_AR=/usr/bin/llvm-ar \
     -DCMAKE_NM=/usr/bin/llvm-nm \
     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
