@@ -1,7 +1,6 @@
 sd "/usr/lib64/libffi\.so" "/usr/lib64/libffi.a" $(fd -uu --glob *.ninja)
 sd "/usr/lib64/libz\.so" "/usr/lib64/libz.a" $(fd -uu --glob *.ninja)
 sd "/usr/lib64/libxml2\.so" "/usr/lib64/libxml2.a /usr/lib64/liblzma.a /usr/lib64/libz.a" $(fd -uu --glob *.ninja)
-sd "/usr/lib64/libffi\.so" "/usr/lib64/libffi.a" $(fd -uu --glob *.ninja)
 sd "/usr/lib64/libz\.so" "/usr/lib64/libz.a" $(fd -uu --glob *.ninja)
 sd "/usr/lib64/libxml2\.so" "/usr/lib64/libxml2.a /usr/lib64/liblzma.a /usr/lib64/libz.a" $(fd -uu --glob *.ninja)
 sd '(LINK_LIBRARIES.+)(\s/usr/lib64/libz\.so)' -- '$1 -Wl,--whole-archive,--allow-multiple-definition,/usr/lib64/libz.a,-lpthread,-lrt,-ldl,-lm,-lmvec,--no-allow-multiple-definition,--no-whole-archive' $(fd -uu --glob *.ninja)
