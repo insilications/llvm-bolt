@@ -7,7 +7,6 @@ doxygen
 googletest-dev
 grep
 humanize
-llvm-dev
 lua-dev
 matplotlib
 numpy
@@ -42,3 +41,5 @@ pypi(ruamel.yaml)
 pypi(ruamel.yaml.clib)
 pypi(seaborn)
 pypi(smmap)
+llvm-extras-libclang-cpp
+llvm-extras-libllvm

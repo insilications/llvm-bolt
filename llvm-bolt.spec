@@ -5,15 +5,15 @@
 %define keepstatic 1
 Name     : llvm-bolt
 Version  : 14.0.0
-Release  : 440
+Release  : 441
 URL      : file:///aot/build/clearlinux/packages/llvm-bolt/llvm-bolt-14.0.0.tar.gz
 Source0  : file:///aot/build/clearlinux/packages/llvm-bolt/llvm-bolt-14.0.0.tar.gz
-Summary  : No detailed summary available
+Summary  : Google microbenchmark framework
 Group    : Development/Tools
-License  : GPL-2.0
-Requires: llvm-bolt-bin = %{version}-%{release}
+License  : Apache-2.0 GPL-2.0
 BuildRequires : Sphinx
 BuildRequires : Vulkan-Headers-dev
+BuildRequires : Vulkan-Headers-dev Vulkan-Loader-dev Vulkan-Tools
 BuildRequires : Vulkan-Loader-dev
 BuildRequires : Vulkan-Tools
 BuildRequires : asciidoctor
@@ -72,6 +72,7 @@ BuildRequires : libxslt
 BuildRequires : llvm
 BuildRequires : llvm-bin
 BuildRequires : llvm-data
+BuildRequires : llvm-dev
 BuildRequires : llvm-lib
 BuildRequires : llvm-libexec
 BuildRequires : llvm-staticdev
@@ -94,6 +95,7 @@ BuildRequires : pcre2
 BuildRequires : pcre2-dev
 BuildRequires : pcre2-staticdev
 BuildRequires : perl
+BuildRequires : pkg-config
 BuildRequires : pkgconfig(libedit)
 BuildRequires : pkgconfig(libffi)
 BuildRequires : pkgconfig(zlib)
@@ -133,23 +135,9 @@ BuildRequires : zlib-staticdev
 %global debug_package %{nil}
 
 %description
-No detailed description available
-
-%package bin
-Summary: bin components for the llvm-bolt package.
-Group: Binaries
-
-%description bin
-bin components for the llvm-bolt package.
-
-
-%package staticdev
-Summary: staticdev components for the llvm-bolt package.
-Group: Default
-
-%description staticdev
-staticdev components for the llvm-bolt package.
-
+Polly - Polyhedral optimizations for LLVM
+-----------------------------------------
+http://polly.llvm.org/
 
 %prep
 %setup -q -n llvm-bolt-14.0.0
@@ -161,7 +149,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1655730039
+export SOURCE_DATE_EPOCH=1656307511
 unset LD_AS_NEEDED
 mkdir -p clr-build
 pushd clr-build
@@ -173,10 +161,10 @@ unset CFLAGS
 unset CXXFLAGS
 unset FCFLAGS
 unset FFLAGS
-export CFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
-export ASMFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
-export CXXFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -fvisibility-inlines-hidden"
-export LDFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
+export CFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -Wl,-no-pie"
+export ASMFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -Wl,-no-pie"
+export CXXFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -fvisibility-inlines-hidden -Wl,-no-pie"
+export LDFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -Wl,-no-pie"
 export CC=clang
 export CXX=clang++
 export AR=/usr/bin/llvm-ar
@@ -204,13 +192,14 @@ cmake -G Ninja ../llvm \
     -DCMAKE_INSTALL_LIBDIR=/usr/lib64 \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_INSTALL_SBINDIR=/usr/bin \
-    -DLLVM_PARALLEL_COMPILE_JOBS:STRING=15 \
+    -DLLVM_PARALLEL_COMPILE_JOBS:STRING=16 \
     -DLLVM_PARALLEL_LINK_JOBS:STRING=1 \
     -DCMAKE_AR=/usr/bin/llvm-ar \
     -DCMAKE_NM=/usr/bin/llvm-nm \
     -DCMAKE_RANLIB=/usr/bin/llvm-ranlib \
     -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
     -DENABLE_LINKER_BUILD_ID:BOOL=ON \
+    -DCMAKE_SKIP_RPATH:BOOL=ON \
     -DCLANG_DEFAULT_LINKER=lld \
     -DLLVM_ENABLE_LIBCXX:BOOL=OFF \
     -DLLVM_STATIC_LINK_CXX_STDLIB:BOOL=ON \
@@ -223,12 +212,15 @@ cmake -G Ninja ../llvm \
     -DLLVM_OPTIMIZED_TABLEGEN:BOOL=ON \
     -DLLVM_ENABLE_NEW_PASS_MANAGER:BOOL=ON \
     -DLLVM_ENABLE_PIC:BOOL=OFF \
+    -DCLANG_DEFAULT_PIE_ON_LINUX:BOOL=OFF \
     -DLLVM_TARGETS_TO_BUILD="X86" \
     -DLLVM_USE_LINKER:STRING=lld \
-    -DLLVM_HOST_TRIPLE="x86_64-generic-linux" \
+    -DLLVM_HOST_TRIPLE="x86_64-pc-linux-gnu" \
     -DPYTHON_EXECUTABLE:FILEPATH=/usr/bin/python3 \
     -DLLVM_INCLUDE_EXAMPLES:BOOL=OFF \
     -DLLVM_INCLUDE_BENCHMARKS:BOOL=OFF \
+    -DLLVM_INCLUDE_TESTS:BOOL=OFF \
+    -DLLVM_INCLUDE_TOOLS:BOOL=OFF \
     -DLLVM_BUILD_EXAMPLES:BOOL=OFF \
     -DLLVM_BUILD_DOCS:BOOL=OFF \
     -DLLVM_BUILD_RUNTIME:BOOL=OFF \
@@ -250,16 +242,20 @@ cmake -G Ninja ../llvm \
     -DLLVM_ENABLE_TERMINFO:BOOL=OFF \
     -DLLVM_ENABLE_ZLIB:BOOL=ON \
     -DLLVM_ENABLE_FFI:BOOL=ON \
+    -DFFI_INCLUDE_DIR=`pkg-config --variable=includedir libffi` \
     -DLLVM_ENABLE_ASSERTIONS:BOOL=OFF \
+    -DLLVM_ENABLE_BINDINGS:BOOL=OFF \
+    -DLLVM_ENABLE_DOXYGEN:BOOL=OFF \
     -DLLVM_ENABLE_LTO:STRING="Thin" \
+    -DLLVM_BUILD_TESTS:BOOL=OFF \
     -DLLVM_ENABLE_PROJECTS="bolt" \
-    -DCMAKE_C_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
-    -DCMAKE_CXX_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -fvisibility-inlines-hidden" \
-    -DCMAKE_EXE_LINKER_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
-    -DCMAKE_MODULE_LINKER_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
-    -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
-    -DCMAKE_ASM_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
-    -DCMAKE_Fortran_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
+    -DCMAKE_C_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
+    -DCMAKE_CXX_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -fvisibility-inlines-hidden" \
+    -DCMAKE_EXE_LINKER_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
+    -DCMAKE_MODULE_LINKER_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
+    -DCMAKE_SHARED_LINKER_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
+    -DCMAKE_ASM_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
+    -DCMAKE_Fortran_FLAGS_RELEASE="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie" \
     -DGCC_INSTALL_PREFIX="/usr" \
     -Wno-dev
 ## make_prepend content
@@ -294,7 +290,7 @@ ninja --verbose llvm-bolt-heatmap
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1655730039
+export SOURCE_DATE_EPOCH=1656307511
 rm -rf %{buildroot}
 ## altflags1f content
 export VERBOSE=1
@@ -304,10 +300,10 @@ unset CFLAGS
 unset CXXFLAGS
 unset FCFLAGS
 unset FFLAGS
-export CFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
-export ASMFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
-export CXXFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -fvisibility-inlines-hidden"
-export LDFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fasynchronous-unwind-tables -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=native -mcpu=native -mno-vzeroupper -mprefer-vector-width=256 -mtune=native -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie"
+export CFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -Wl,-no-pie"
+export ASMFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -Wl,-no-pie"
+export CXXFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -fvisibility-inlines-hidden -Wl,-no-pie"
+export LDFLAGS="-Wno-unused-command-line-argument -DNDEBUG=1 -O3 -Wa,-mrelax-relocations=yes -fno-direct-access-external-data -g1 -falign-functions=32 -fno-plt -fno-semantic-interposition -fno-stack-protector -fomit-frame-pointer -fuse-ld=lld -fslp-vectorize -ftree-slp-vectorize -ftree-vectorize -fvectorize -march=skylake -mcpu=skylake -mno-vzeroupper -mprefer-vector-width=256 -mtune=skylake -pipe -pthread -static-libgcc -static-libstdc++ -Wno-error -Wp,-D_REENTRANT -Wall -Wl,--build-id=sha1 -Wl,--enable-new-dtags -Wl,-Bsymbolic-functions -Wl,-O2 -Wl,-z,now,-z,relro,-z,max-page-size=0x1000,-z,separate-code -Wl,--emit-relocs -fno-PIC -fno-PIE -fno-pic -fno-pie -Wl,-no-pie"
 export CC=clang
 export CXX=clang++
 export AR=/usr/bin/llvm-ar
@@ -347,18 +343,3 @@ popd
 
 %files
 %defattr(-,root,root,-)
-
-%files bin
-%defattr(-,root,root,-)
-/usr/bin/llvm-bolt
-/usr/bin/llvm-bolt-heatmap
-/usr/bin/llvm-boltdiff
-/usr/bin/merge-fdata
-/usr/bin/perf2bolt
-
-%files staticdev
-%defattr(-,root,root,-)
-/usr/lib/libbolt_rt_hugify.a
-/usr/lib/libbolt_rt_instr.a
-/usr/lib64/libbolt_rt_hugify.a
-/usr/lib64/libbolt_rt_instr.a

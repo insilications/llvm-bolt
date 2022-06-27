@@ -8,7 +8,6 @@ googletest-dev
 graphviz
 grep
 humanize
-llvm-dev
 lua-dev
 matplotlib
 numpy
@@ -25,3 +24,5 @@ PyYAML
 scipy
 seaborn
 Z3-dev
+llvm-extras-libclang-cpp
+llvm-extras-libllvm

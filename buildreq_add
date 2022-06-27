@@ -57,6 +57,7 @@ libxml2-dev
 libxml2-staticdev
 libxslt
 llvm
+llvm-dev
 llvm-bin
 llvm-data
 llvm-dev
